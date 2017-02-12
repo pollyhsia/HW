@@ -1,0 +1,53 @@
+---
+title: "期中作業三"
+author: "pollyhsia"
+date: "2017年2月13日"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+
+###Tree1,2,3,4,5  circumference的散佈圖
+```{r echo=T}
+library(ggplot2)
+attach(Orange)
+newTree = factor(Tree, ordered = T, levels = c("1","2","3","4","5"))
+ggplot(Orange, aes(x = age, y = circumference, color = newTree )) +
+   geom_point(aes(shape=newTree ))
+```
+
+###Tree1,2,3,4,5  circumference的線圖
+```{r echo=T}
+ggplot(Orange, aes(x = age, y = circumference, color = newTree )) +
+  geom_point(aes(shape=newTree )) +
+  geom_line()
+```
+
+###Tree1,2,3,4,5  circumference直方圖
+```{r echo=T,message=FALSE}
+ggplot(Orange, aes(x = circumference)) +
+  geom_histogram(bins=35) +
+  facet_wrap(~ Tree, nrow = 1) 
+```
+
+###Tree1,2,3,4,5  circumference盒鬚圖
+```{r echo=T}
+ggplot(Orange, aes(x = newTree, y = circumference)) +
+  geom_boxplot()
+```
+
+###Tree1,2,3,4,5  平均circumference的長條圖
+```{r echo=T}
+avg1 = sum(Orange[c(1:7),3])/7
+avg2 = sum(Orange[c(8:14),3])/7
+avg3 = sum(Orange[c(15:21),3])/7
+avg4 = sum(Orange[c(22:28),3])/7
+avg5 = sum(Orange[c(29:35),3])/7
+avg = c(avg1,avg2,avg3,avg4,avg5)
+avg = as.data.frame(avg)
+ggplot(avg,aes(x =  avg)) + 
+  geom_bar()
+```
