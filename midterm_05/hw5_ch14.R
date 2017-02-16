@@ -7,7 +7,7 @@ birth_date_chr <- paste(birth_year, straw_hat_df$birthday, sep = "-")
 straw_hat_df$birth_date <- as.Date(birth_date_chr)
 View(straw_hat_df$birth_dat)
 
-###¥Î%>%
+###ç”¨%>%
 
 straw_hat_df$birth_date <- as.numeric(format(Sys.Date(), '%Y')) %>%
   `-` (straw_hat_df$age) %>%
