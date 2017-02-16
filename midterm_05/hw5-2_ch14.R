@@ -4,7 +4,7 @@ weights <- c(65.4, 59.2, 63.6, 88.4, 68.7)
 heights_and_weights <- data.frame(heights, weights)
 
 
-##¥Îmutate
+##ç”¨mutate
 
 
 
