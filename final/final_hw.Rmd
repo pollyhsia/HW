@@ -1,0 +1,80 @@
+---
+title: "final_hw"
+author: "pollyhsia"
+date: "2017年2月17日"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+##有答案的資料整理
+```{r, echo=T}
+titanic <- read.csv("https://storage.googleapis.com/r_rookies/kaggle_titanic_train.csv")
+titanic <- titanic[complete.cases(titanic), ] 
+titanic$Survived <- factor(titanic$Survived)
+titanic$Embarked <- as.character(titanic$Embarked)
+titanic$Embarked[titanic$Embarked == ""] <- "S"
+titanic$Embarked <- factor(titanic$Embarked)
+```
+
+##建模型
+```{r, echo=T, message=F}
+library(randomForest)
+rf_clf <- randomForest(Survived ~ Pclass + Sex + Age + SibSp + Parch + Fare + Embarked, data = titanic ,
+                       ntree = 100)
+```
+
+##沒有答案的資料
+```{r, echo=T}
+url <- "https://storage.googleapis.com/py_ds_basic/kaggle_titanic_test.csv"
+to_predict <- read.csv(url)
+summary(to_predict)
+```
+
+##填補遺漏值
+```{r, echo=T,, message=F}
+library(dplyr)
+library(magrittr)
+
+  # Fare
+fare_mean <- mean(to_predict$Fare, na.rm = TRUE)
+to_predict$Fare[is.na(to_predict$Fare)] <- fare_mean
+
+  # Age
+mean_age_by_Pclass <- to_predict %>%
+  group_by(Pclass) %>%
+  summarise(mean_age = round(mean(Age, na.rm = TRUE)))
+filter_1 <- is.na(to_predict$Age) & to_predict$Pclass == 1
+filter_2 <- is.na(to_predict$Age) & to_predict$Pclass == 2
+filter_3 <- is.na(to_predict$Age) & to_predict$Pclass == 3
+mean_age_by_Pclass
+
+to_predict[filter_1, ]$Age <- 41
+to_predict[filter_2, ]$Age <- 29
+to_predict[filter_3, ]$Age <- 24
+
+  # Summary after imputation
+summary(to_predict)
+```
+
+##用模型預測 & 寫出預測結果
+```{r, echo=T,, message=F}
+predicted <- predict(rf_clf,
+                     newdata = to_predict[, c("Pclass", "Sex", "Age", "SibSp", "Parch", "Fare", "Embarked")],
+                     type = "class")
+
+
+to_submit <- data.frame(to_predict[, "PassengerId"], predicted)
+names(to_submit) <- c("PassengerId", "Survived")
+head(to_submit, n = 10)
+write.csv(to_submit, file = "D:\\R\\CSIE_R\\class8\\to_submit.csv", row.names = FALSE)
+```
+
+##上傳截圖(第一次上傳 & 第二次上傳 & 第二次上傳成績)
+![第一次上傳](D:\\R\\CSIE_R\\class8\\final.PNG)
+---
+![第二次上傳](D:\\R\\CSIE_R\\class8\\final2.PNG)
+---
+![第二次上傳成績](D:\\R\\CSIE_R\\class8\\第二次上傳的成績.PNG)
