@@ -1,7 +1,7 @@
 ---
 title: "final_hw"
 author: "pollyhsia"
-date: "2017¦~2¤ë17¤é"
+date: "2017å¹´2æœˆ17æ—¥"
 output: html_document
 ---
 
@@ -9,7 +9,7 @@ output: html_document
 knitr::opts_chunk$set(echo = TRUE)
 ```
 
-##¦³µª®×ªº¸ê®Æ¾ã²z
+##æœ‰ç­”æ¡ˆçš„è³‡æ–™æ•´ç†
 ```{r, echo=T}
 titanic <- read.csv("https://storage.googleapis.com/r_rookies/kaggle_titanic_train.csv")
 titanic <- titanic[complete.cases(titanic), ] 
@@ -19,21 +19,21 @@ titanic$Embarked[titanic$Embarked == ""] <- "S"
 titanic$Embarked <- factor(titanic$Embarked)
 ```
 
-##«Ø¼Ò«¬
+##å»ºæ¨¡å‹
 ```{r, echo=T, message=F}
 library(randomForest)
 rf_clf <- randomForest(Survived ~ Pclass + Sex + Age + SibSp + Parch + Fare + Embarked, data = titanic ,
                        ntree = 100)
 ```
 
-##¨S¦³µª®×ªº¸ê®Æ
+##æ²’æœ‰ç­”æ¡ˆçš„è³‡æ–™
 ```{r, echo=T}
 url <- "https://storage.googleapis.com/py_ds_basic/kaggle_titanic_test.csv"
 to_predict <- read.csv(url)
 summary(to_predict)
 ```
 
-##¶ñ¸É¿òº|­È
+##å¡«è£œéºæ¼å€¼
 ```{r, echo=T,, message=F}
 library(dplyr)
 library(magrittr)
@@ -59,7 +59,7 @@ to_predict[filter_3, ]$Age <- 24
 summary(to_predict)
 ```
 
-##¥Î¼Ò«¬¹w´ú & ¼g¥X¹w´úµ²ªG
+##ç”¨æ¨¡å‹é æ¸¬ & å¯«å‡ºé æ¸¬çµæœ
 ```{r, echo=T,, message=F}
 predicted <- predict(rf_clf,
                      newdata = to_predict[, c("Pclass", "Sex", "Age", "SibSp", "Parch", "Fare", "Embarked")],
@@ -72,9 +72,9 @@ head(to_submit, n = 10)
 write.csv(to_submit, file = "D:\\R\\CSIE_R\\class8\\to_submit.csv", row.names = FALSE)
 ```
 
-##¤W¶ÇºI¹Ï(²Ä¤@¦¸¤W¶Ç & ²Ä¤G¦¸¤W¶Ç & ²Ä¤G¦¸¤W¶Ç¦¨ÁZ)
-![²Ä¤@¦¸¤W¶Ç](D:\\R\\CSIE_R\\class8\\final.PNG)
+##ä¸Šå‚³æˆªåœ–(ç¬¬ä¸€æ¬¡ä¸Šå‚³ & ç¬¬äºŒæ¬¡ä¸Šå‚³ & ç¬¬äºŒæ¬¡ä¸Šå‚³æˆç¸¾)
+![ç¬¬ä¸€æ¬¡ä¸Šå‚³](D:\\R\\CSIE_R\\class8\\final.PNG)
 ---
-![²Ä¤G¦¸¤W¶Ç](D:\\R\\CSIE_R\\class8\\final2.PNG)
+![ç¬¬äºŒæ¬¡ä¸Šå‚³](D:\\R\\CSIE_R\\class8\\final2.PNG)
 ---
-![²Ä¤G¦¸¤W¶Ç¦¨ÁZ](D:\\R\\CSIE_R\\class8\\²Ä¤G¦¸¤W¶Çªº¦¨ÁZ.PNG)
+![ç¬¬äºŒæ¬¡ä¸Šå‚³æˆç¸¾](D:\\R\\CSIE_R\\class8\\ç¬¬äºŒæ¬¡ä¸Šå‚³çš„æˆç¸¾.PNG)
